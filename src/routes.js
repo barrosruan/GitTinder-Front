@@ -1,19 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 
-import Login from './pages/Login';
-import Main from './pages/Main';
+import Login from "./pages/Login";
+import Main from "./pages/Main";
 
-
-export default function Routes() {
-    return (
-      <BrowserRouter>
-      <Route path="/" exact Component={Login} />
-      <Route path="/main" Component={Main} />
-
-    
-
-      </BrowserRouter>  
-    );
+export default function CreateRoutes() {
+  return (
+    <Routes>
+      <Route path="/" exact element={<Login />} />
+      <Route path="/main" element={<Main />} />
+    </Routes>
+  );
 }
