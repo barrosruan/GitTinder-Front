@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import "./Login.css";
+import api from "../services/api";
 
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +11,14 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    navigate("/main");
+    const response = await api.post("/devs", { username });
+
+    const { _id } = response.data;
+
+    navigate(`/dev/${_id}`);
   }
 
   return (

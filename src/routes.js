@@ -9,7 +9,7 @@ export default function CreateRoutes() {
   return (
     <Routes>
       <Route path="/" exact element={<Login />} />
-      <Route path="/main" element={<Main />} />
+      <Route path="/dev/:id" element={<Main />} />
     </Routes>
   );
 }
