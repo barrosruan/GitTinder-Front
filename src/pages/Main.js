@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 import "./Main.css";
 
 import logo from "../assets/logo.png";
-import deslike from "../assets/deslike.png";
+import dislike from "../assets/deslike.png";
 import like from "../assets/like.png";
 
 export default function Main() {
@@ -14,7 +14,7 @@ export default function Main() {
 
   useEffect(() => {
     async function loadUsers() {
-      const response = await api.get("/devs/${id}", {
+      const response = await api.get("/devs", {
         headers: {
           user: id,
         },
@@ -26,28 +26,50 @@ export default function Main() {
     loadUsers();
   }, [id]);
 
+  async function handleLike(id) {
+    await api.post(`/devs/${id}/likes `, null, {
+      headers: { user: id },
+    });
+
+    setUsers(users.filter((user) => user._id != id));
+  }
+
+  async function handleDislike(id) {
+    await api.post(`/devs/${id}/dislikes `, null, {
+      headers: { user: id },
+    });
+
+    setUsers(users.filter((user) => user._id != id));
+  }
+
   return (
     <div className="main-container">
-      <img src={logo} alt="GitTinder" />
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <img src="{user.avatar}" alt="{user.name}" />
-            <footer>
-              <strong>{user.name}</strong>
-              <p>{user.bio}</p>
-            </footer>
-            <div className="buttons">
-              <button type="button">
-                <img src={deslike} alt="deslike"></img>
-              </button>
-              <button type="button">
-                <img src={like} alt="like"></img>
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Link to="/">
+        <img src={logo} alt="GitTinder" />
+      </Link>
+      {users.length > 0 ? (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              <img src={user.avatar} alt={user.name} />
+              <footer>
+                <strong>{user.name}</strong>
+                <p>{user.bio}</p>
+              </footer>
+              <div className="buttons">
+                <button type="button" onClick={() => handleDislike(user._id)}>
+                  <img src={dislike} alt="dislike"></img>
+                </button>
+                <button type="button" onClick={() => handleLike(user._id)}>
+                  <img src={like} alt="like"></img>
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="empty"> Acabou :( </div>
+      )}
     </div>
   );
 }

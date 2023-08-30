@@ -69,3 +69,11 @@
     transition: all 0.2s;
 
 }
+
+.main-container .empty {
+  font-size:  45px;
+  color: #110f0f;
+  font-weight: bold;
+  margin-top: 300px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+}
