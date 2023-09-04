@@ -9,11 +9,13 @@ import "./Main.css";
 import logo from "../assets/logo.png";
 import dislike from "../assets/deslike.png";
 import like from "../assets/like.png";
+import macth from "../assets/match.png";
 
 export default function Main() {
   let { id } = useParams();
 
   const [users, setUsers] = useState([]);
+  const [matchDev, setMactchDev] = useState(true);
 
   useEffect(() => {
     async function loadUsers() {
@@ -32,6 +34,10 @@ export default function Main() {
   useEffect(() => {
     const socket = io("http://localhost:3333", {
       query: { user: id },
+    });
+
+    socket.on("match", (dev) => {
+      console.log(dev);
     });
   }, [id]);
 
@@ -78,6 +84,20 @@ export default function Main() {
         </ul>
       ) : (
         <div className="empty"> Acabou :( </div>
+      )}
+
+      {matchDev && (
+        <div className="match-container">
+          <h3 className="madev">Deu Match!</h3>
+          <img
+            className="avatar"
+            src="https://avatars.githubusercontent.com/u/134977355?v=4"
+            alt=""
+          />
+          <strong>Elano Junior</strong>
+          <p>Desenvolvedor fronend</p>
+          <button tye="button">Fechar</button>
+        </div>
       )}
     </div>
   );
