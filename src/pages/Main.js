@@ -9,13 +9,12 @@ import "./Main.css";
 import logo from "../assets/logo.png";
 import dislike from "../assets/deslike.png";
 import like from "../assets/like.png";
-import macth from "../assets/match.png";
 
 export default function Main() {
   let { id } = useParams();
 
   const [users, setUsers] = useState([]);
-  const [matchDev, setMactchDev] = useState(true);
+  const [matchDev, setMatchDev] = useState(false);
 
   useEffect(() => {
     async function loadUsers() {
@@ -37,7 +36,7 @@ export default function Main() {
     });
 
     socket.on("match", (dev) => {
-      console.log(dev);
+      setMatchDev(dev);
     });
   }, [id]);
 
@@ -46,7 +45,7 @@ export default function Main() {
       headers: { user: id },
     });
 
-    setUsers(users.filter((user) => user._id != id));
+    setUsers(users.filter((user) => user._id !== id));
   }
 
   async function handleDislike(id) {
@@ -54,7 +53,7 @@ export default function Main() {
       headers: { user: id },
     });
 
-    setUsers(users.filter((user) => user._id != id));
+    setUsers(users.filter((user) => user._id !== id));
   }
 
   return (
@@ -89,14 +88,12 @@ export default function Main() {
       {matchDev && (
         <div className="match-container">
           <h3 className="madev">Deu Match!</h3>
-          <img
-            className="avatar"
-            src="https://avatars.githubusercontent.com/u/134977355?v=4"
-            alt=""
-          />
-          <strong>Elano Junior</strong>
-          <p>Desenvolvedor fronend</p>
-          <button tye="button">Fechar</button>
+          <img className="avatar" src={matchDev.avatar} alt="" />
+          <strong>{matchDev.name}</strong>
+          <p>{matchDev.bio}</p>
+          <button tye="button" onClick={() => setMatchDev(null)}>
+            Fechar
+          </button>
         </div>
       )}
     </div>
