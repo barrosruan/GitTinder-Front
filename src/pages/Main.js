@@ -11,7 +11,7 @@ import dislike from "../assets/deslike.png";
 import like from "../assets/like.png";
 
 export default function Main() {
-  let { id } = useParams();
+  const { id: paramsId } = useParams();
 
   const [users, setUsers] = useState([]);
   const [matchDev, setMatchDev] = useState(false);
@@ -20,7 +20,7 @@ export default function Main() {
     async function loadUsers() {
       const response = await api.get("/devs", {
         headers: {
-          user: id,
+          user: paramsId,
         },
       });
 
@@ -28,21 +28,21 @@ export default function Main() {
     }
 
     loadUsers();
-  }, [id]);
+  }, [paramsId]);
 
   useEffect(() => {
     const socket = io("http://localhost:3333", {
-      query: { user: id },
+      query: { user: paramsId },
     });
 
     socket.on("match", (dev) => {
       setMatchDev(dev);
     });
-  }, [id]);
+  }, [paramsId]);
 
   async function handleLike(id) {
     await api.post(`/devs/${id}/likes `, null, {
-      headers: { user: id },
+      headers: { user: paramsId },
     });
 
     setUsers(users.filter((user) => user._id !== id));
